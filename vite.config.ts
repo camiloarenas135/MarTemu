@@ -20,5 +20,26 @@ export default defineConfig(() => {
       // Serve index.html for all routes so /admin works in the SPA
       historyApiFallback: true,
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('@supabase')) {
+                return 'vendor-supabase';
+              }
+              if (id.includes('motion')) {
+                return 'vendor-motion';
+              }
+              if (id.includes('lucide-react')) {
+                return 'vendor-lucide';
+              }
+              return 'vendor-core';
+            }
+          },
+        },
+      },
+    },
   };
 });
+
