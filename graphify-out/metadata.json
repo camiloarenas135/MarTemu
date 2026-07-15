@@ -1,0 +1,51 @@
+{
+  "projectName": "MarTemu",
+  "communityLabels": {
+    "0": "Product Image Editor",
+    "1": "Product Catalog",
+    "2": "Community 2",
+    "3": "Community 3",
+    "4": "Subscription Dashboard",
+    "5": "Community 5",
+    "6": "Community 6",
+    "7": "Community 7",
+    "8": "Community 8",
+    "9": "Community 9",
+    "10": "Community 10",
+    "11": "unknown",
+    "12": "Community 12",
+    "13": "unknown",
+    "14": "unknown"
+  },
+  "communitySummaries": {
+    "0": "Handles image cropping, editing, and metadata for product listings.",
+    "1": "Handles the state, filtering, sorting, and selection logic for browsing products in an e-commerce application.",
+    "2": "",
+    "3": "",
+    "4": "Handles user subscription status, orders, VIP membership, session data, and UI state in the account area.",
+    "5": "",
+    "6": "",
+    "7": "",
+    "8": "",
+    "9": "",
+    "10": "",
+    "11": "Unable to determine domain due to missing code entities.",
+    "12": "",
+    "13": "Unable to determine domain due to missing code entities.",
+    "14": "Unable to determine domain due to missing code entities."
+  },
+  "communityLinks": {
+    "3": {
+      "2": 1
+    },
+    "2": {},
+    "0": {
+      "10": 3,
+      "2": 1
+    },
+    "10": {},
+    "5": {
+      "2": 2
+    }
+  }
+}

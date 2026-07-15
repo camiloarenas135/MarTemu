@@ -1,0 +1,36 @@
+{
+  "hotspots": [
+    {
+      "label": "Footer()",
+      "risk": 0.56,
+      "type": "FUNCTION"
+    },
+    {
+      "label": "mockSupabaseClient",
+      "risk": 0.443,
+      "type": "FUNCTION"
+    },
+    {
+      "label": "handleCheckout()",
+      "risk": 0.287,
+      "type": "FUNCTION"
+    },
+    {
+      "label": "AdminCatalog.tsx",
+      "risk": 0.207,
+      "type": "FUNCTION"
+    },
+    {
+      "label": "handleActionConfirm()",
+      "risk": 0.19,
+      "type": "FUNCTION"
+    }
+  ],
+  "blast_radius": {
+    "updateCartState()": 6,
+    "handleCheckout()": 6,
+    "handleSubmit()": 6,
+    "sanitizeString()": 5,
+    "writeSafeLocalStorage()": 4
+  }
+}

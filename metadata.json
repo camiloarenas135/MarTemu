@@ -1,0 +1,6 @@
+{
+  "name": "MarTemu",
+  "description": "Plataforma de catálogo premium y tienda interactiva con pedidos rápidos vía WhatsApp, club VIP, estadísticas en tiempo real y panel de administración seguro sincronizado con Supabase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
