@@ -374,7 +374,7 @@ export default function Catalog({
                     </span>
                     
                     {product.promo_price && (
-                      <span className="rounded-md bg-linear-to-r from-rose-500 to-amber-500 px-2 py-0.5 text-[9px] font-extrabold text-white shadow-xs uppercase tracking-wider animate-pulse">
+                      <span className="rounded-md bg-linear-to-r from-brand-purple to-rose-500 px-2 py-0.5 text-[9px] font-extrabold text-white shadow-xs uppercase tracking-wider animate-pulse">
                         {calculateDiscountPercent(product.price, product.promo_price)}% OFF
                       </span>
                     )}

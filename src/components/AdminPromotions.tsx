@@ -434,7 +434,7 @@ export default function AdminPromotions({ products, onRefresh }: AdminPromotions
           {/* BULK ACTIONS PANEL */}
           <div className="bg-white rounded-2xl border border-gray-150 p-5 shadow-xs space-y-4">
             <h4 className="font-bold text-brand-navy text-sm flex items-center gap-2">
-              <TrendingDown className="h-4 w-4 text-orange-500" />
+              <TrendingDown className="h-4 w-4 text-brand-purple" />
               <span>Descuentos Masivos</span>
             </h4>
 
@@ -489,7 +489,7 @@ export default function AdminPromotions({ products, onRefresh }: AdminPromotions
               <button
                 type="submit"
                 disabled={isBulkSubmitting || bulkDiscountPercent === ''}
-                className="w-full flex h-10 items-center justify-center gap-1.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition active:scale-95 shadow-sm shadow-orange-500/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex h-10 items-center justify-center gap-1.5 rounded-lg bg-brand-purple hover:bg-brand-purple/90 text-white text-xs font-bold transition active:scale-95 shadow-sm shadow-brand-purple/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span>Aplicar a la Categoría</span>
               </button>
@@ -539,7 +539,7 @@ export default function AdminPromotions({ products, onRefresh }: AdminPromotions
             
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-gray-100 pb-4">
               <h4 className="font-bold text-brand-navy text-sm flex items-center gap-2">
-                <ShoppingBag className="h-4 w-4 text-emerald-500" />
+                <ShoppingBag className="h-4 w-4 text-brand-purple" />
                 <span>Ofertas y Promociones Activas ({totalPromotions})</span>
               </h4>
 
