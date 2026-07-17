@@ -18,7 +18,7 @@ interface AdminCatalogProps {
   onClearForceEdit?: () => void;
 }
 
-const CATEGORIES = ['Tecnología', 'Hogar y Cocina', 'Ropa', 'Belleza', 'Novedades'];
+const CATEGORIES = ['Tecnología', 'Hogar y Cocina', 'Ropa', 'Belleza', 'Peluches', 'Novedades'];
 
 export default function AdminCatalog({ 
   products, 
