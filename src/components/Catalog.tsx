@@ -36,6 +36,23 @@ export default function Catalog({
     return sessionStorage.getItem('catalog_selected_category') || 'Todos';
   });
 
+  const [shuffledProducts, setShuffledProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    if (products.length > 0) {
+      const shuffled = [...products];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      setShuffledProducts(shuffled);
+    } else {
+      setShuffledProducts([]);
+    }
+  }, [products]);
+
+  const displayProducts = shuffledProducts.length > 0 ? shuffledProducts : products;
+
   useEffect(() => {
     sessionStorage.setItem('catalog_selected_category', selectedCategory);
   }, [selectedCategory]);
@@ -84,7 +101,7 @@ export default function Catalog({
   // Preloads the first 4 images of the active category into the document <head> for near-instant rendering.
   useEffect(() => {
     // 1. Filter products for the chosen category
-    const categoryProducts = products.filter((p) => {
+    const categoryProducts = displayProducts.filter((p) => {
       if (selectedCategory === 'Todos') return true;
       return p.category === selectedCategory;
     });
@@ -123,7 +140,7 @@ export default function Catalog({
     });
   };
 
-  const filteredProducts = products
+  const filteredProducts = displayProducts
     .filter((p) => {
       const matchesCategory = selectedCategory === 'Todos' || p.category === selectedCategory;
       
