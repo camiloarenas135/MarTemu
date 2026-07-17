@@ -11,7 +11,6 @@ import { isRealSupabaseConfigured } from '../lib/supabase';
 interface HeaderProps {
   cartCount: number;
   onOpenCart: () => void;
-  onOpenVIP: () => void;
   isAdminRoute: boolean;
   onNavigateShop: () => void;
   onNavigateAdmin: () => void;
@@ -22,7 +21,6 @@ interface HeaderProps {
 export default function Header({
   cartCount,
   onOpenCart,
-  onOpenVIP,
   isAdminRoute,
   onNavigateShop,
   onNavigateAdmin,
@@ -90,18 +88,6 @@ export default function Header({
               </button>
             )}
 
-
-            {/* VIP Club Trigger */}
-            {!isAdminRoute && (
-              <button
-                onClick={onOpenVIP}
-                className="group flex h-9 w-9 sm:h-auto sm:w-auto items-center justify-center sm:justify-start gap-1.5 rounded-full bg-linear-to-r from-brand-purple to-brand-blue text-white transition-all hover:shadow-md hover:shadow-brand-purple/20 sm:px-4 sm:py-2 text-xs font-bold shrink-0"
-                id="btn-vip-club"
-              >
-                <Users className="h-4 w-4 text-amber-300 group-hover:scale-125 transition-transform" />
-                <span className="hidden sm:inline">Club VIP</span>
-              </button>
-            )}
 
             {/* Admin mode indicator — only shown on /admin route */}
             {isAdminRoute && (

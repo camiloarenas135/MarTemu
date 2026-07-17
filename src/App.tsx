@@ -10,7 +10,6 @@ import Footer from './components/Footer';
 import { motion } from 'motion/react';
 import Catalog from './components/Catalog';
 import Cart from './components/Cart';
-import VIPClubForm from './components/VIPClubForm';
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 import { supabase } from './lib/supabase';
 import { getVariantPromoPrice } from './utils/promoHelpers';
@@ -46,7 +45,6 @@ export default function App() {
 
   // Modal controllers
   const [isCartOpen, setIsCartOpen] = useState(() => sessionStorage.getItem('is_cart_open') === 'true');
-  const [isVIPOpen, setIsVIPOpen] = useState(() => sessionStorage.getItem('is_vip_open') === 'true');
 
   // Products state (synchronized from Supabase/mock)
   const [products, setProducts] = useState<Product[]>([]);
@@ -88,10 +86,6 @@ export default function App() {
   useEffect(() => {
     sessionStorage.setItem('is_cart_open', isCartOpen.toString());
   }, [isCartOpen]);
-
-  useEffect(() => {
-    sessionStorage.setItem('is_vip_open', isVIPOpen.toString());
-  }, [isVIPOpen]);
 
   // Track and restore scroll position across refreshes
   useEffect(() => {
@@ -189,7 +183,6 @@ export default function App() {
       <Header
         cartCount={cartCount}
         onOpenCart={() => setIsCartOpen(true)}
-        onOpenVIP={() => setIsVIPOpen(true)}
         isAdminRoute={isAdminRoute}
         onNavigateShop={() => navigate('/')}
         onNavigateAdmin={() => navigate('/admin')}
@@ -223,7 +216,6 @@ export default function App() {
 
       {/* Universal Footer */}
       <Footer
-        onOpenVIP={() => setIsVIPOpen(true)}
         onNavigateShop={() => navigate('/')}
       />
 
@@ -237,12 +229,6 @@ export default function App() {
         onClearCart={handleClearCart}
       />
 
-      {/* VIP Club Modal popup */}
-      <VIPClubForm
-        isOpen={isVIPOpen}
-        onClose={() => setIsVIPOpen(false)}
-      />
-
       {/* Mobile Sticky Bottom Navigation (only on public storefront) */}
       {!isAdminRoute && (
         <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-150 bg-white/95 backdrop-blur-md px-4 py-2 shadow-lg md:hidden flex justify-around items-center h-14">
@@ -251,9 +237,9 @@ export default function App() {
               navigate('/');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className={`flex flex-col items-center gap-0.5 transition active:scale-95 cursor-pointer ${(pathname === '/' && !isCartOpen && !isVIPOpen) ? 'text-brand-blue font-bold' : 'text-gray-500 hover:text-brand-blue'}`}
+            className={`flex flex-col items-center gap-0.5 transition active:scale-95 cursor-pointer ${(pathname === '/' && !isCartOpen) ? 'text-brand-blue font-bold' : 'text-gray-500 hover:text-brand-blue'}`}
           >
-            <Home className={`h-5 w-5 ${(pathname === '/' && !isCartOpen && !isVIPOpen) ? 'text-brand-blue' : 'text-gray-500'}`} />
+            <Home className={`h-5 w-5 ${(pathname === '/' && !isCartOpen) ? 'text-brand-blue' : 'text-gray-500'}`} />
             <span className="text-[10px] font-bold">Inicio</span>
           </button>
           
@@ -271,14 +257,6 @@ export default function App() {
           >
             <Search className={`h-5 w-5 ${searchQuery ? 'text-brand-blue' : 'text-gray-500'}`} />
             <span className="text-[10px] font-bold">Buscar</span>
-          </button>
-
-          <button
-            onClick={() => setIsVIPOpen(true)}
-            className={`flex flex-col items-center gap-0.5 transition active:scale-95 cursor-pointer ${isVIPOpen ? 'text-brand-purple font-bold' : 'text-gray-500 hover:text-brand-blue'}`}
-          >
-            <User className={`h-5 w-5 ${isVIPOpen ? 'text-brand-purple' : 'text-gray-500'}`} />
-            <span className="text-[10px] font-bold">Club VIP</span>
           </button>
 
           <button

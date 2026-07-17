@@ -9,12 +9,12 @@ import { motion, AnimatePresence } from 'motion/react';
 import { VIPMember } from '../types';
 import { supabase } from '../lib/supabase';
 
-interface AdminVIPProps {
+interface AdminCustomersProps {
   vipMembers: VIPMember[];
   onRefresh: () => void;
 }
 
-export default function AdminVIP({ vipMembers, onRefresh }: AdminVIPProps) {
+export default function AdminCustomers({ vipMembers, onRefresh }: AdminCustomersProps) {
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -60,8 +60,8 @@ export default function AdminVIP({ vipMembers, onRefresh }: AdminVIPProps) {
       onRefresh(); // Trigger data reload in parent
       setDeleteConfirmId(null);
     } catch (err: any) {
-      console.error('Error deleting VIP member:', err);
-      setErrorMessage(err.message || 'Error al eliminar el miembro VIP.');
+      console.error('Error deleting client:', err);
+      setErrorMessage(err.message || 'Error al eliminar el cliente.');
     } finally {
       setIsDeleting(false);
     }
@@ -84,13 +84,13 @@ export default function AdminVIP({ vipMembers, onRefresh }: AdminVIPProps) {
       <div className="flex items-center justify-between border-b border-gray-150 pb-5">
         <div className="flex items-center gap-2">
           <Users className="h-5 w-5 text-brand-purple" />
-          <h3 className="text-lg font-black text-brand-navy">Miembros del Club VIP</h3>
+          <h3 className="text-lg font-black text-brand-navy">Listado de Clientes</h3>
         </div>
 
         <button
           onClick={onRefresh}
-          className="rounded-lg p-2 hover:bg-gray-100 transition"
-          title="Sincronizar Miembros VIP"
+          className="rounded-lg p-2 hover:bg-gray-100 transition cursor-pointer"
+          title="Sincronizar Clientes"
         >
           <RefreshCw className="h-4 w-4 text-gray-500 hover:rotate-45 transition-transform" />
         </button>
@@ -104,7 +104,7 @@ export default function AdminVIP({ vipMembers, onRefresh }: AdminVIPProps) {
             placeholder="Buscar por nombre o WhatsApp..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full h-10 rounded-xl border border-gray-200 bg-white pl-9 pr-3 py-2 text-xs text-gray-800 placeholder-gray-400 focus:border-brand-purple focus:outline-hidden"
+            className="w-full h-10 rounded-xl border border-gray-200 bg-white pl-9 pr-3 py-2 text-xs text-gray-850 focus:border-brand-purple focus:outline-hidden font-medium"
           />
           <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
         </div>
@@ -120,9 +120,9 @@ export default function AdminVIP({ vipMembers, onRefresh }: AdminVIPProps) {
       {filteredVIP.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl border border-gray-100 text-center p-6" id="empty-vip-view">
           <Users className="h-10 w-10 text-brand-purple/45 mb-3" />
-          <h4 className="text-sm font-bold text-gray-700">No se encontraron miembros VIP</h4>
+          <h4 className="text-sm font-bold text-gray-700">No se encontraron clientes</h4>
           <p className="text-xs text-gray-400 max-w-sm mt-1">
-            Prueba cambiando los términos de búsqueda o registrando nuevos miembros.
+            Los datos de tus clientes se recopilarán automáticamente cuando realicen una compra en la tienda.
           </p>
         </div>
       ) : (
@@ -145,7 +145,7 @@ export default function AdminVIP({ vipMembers, onRefresh }: AdminVIPProps) {
                     <td className="px-6 py-4 font-bold text-gray-800">
                       {member.name}
                     </td>
-
+ 
                     {/* WhatsApp */}
                     <td className="px-6 py-4 flex items-center gap-1.5 font-semibold text-gray-700">
                       <Smartphone className="h-4 w-4 text-gray-400" />
@@ -158,18 +158,18 @@ export default function AdminVIP({ vipMembers, onRefresh }: AdminVIPProps) {
                         {member.whatsapp}
                       </a>
                     </td>
-
+ 
                     {/* Registration Date */}
                     <td className="px-6 py-4 text-gray-400 hidden sm:table-cell">
                       {formatDate(member.created_at)}
                     </td>
-
+ 
                     {/* Actions */}
                     <td className="px-6 py-4 text-right">
                       <button
                         onClick={() => setDeleteConfirmId(member.id)}
-                        className="rounded-full p-2 text-rose-500 hover:bg-rose-50 transition-colors"
-                        title="Eliminar Miembro"
+                        className="rounded-full p-2 text-rose-500 hover:bg-rose-50 transition-colors cursor-pointer"
+                        title="Eliminar Cliente"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
@@ -184,7 +184,7 @@ export default function AdminVIP({ vipMembers, onRefresh }: AdminVIPProps) {
           {totalPages > 1 && (
             <div className="flex items-center justify-between border-t border-gray-100 bg-white px-6 py-4">
               <div className="text-xs text-gray-500">
-                Mostrando <span className="font-bold text-gray-800">{paginatedVIP.length}</span> de <span className="font-bold text-gray-800">{filteredVIP.length}</span> miembros
+                Mostrando <span className="font-bold text-gray-800">{paginatedVIP.length}</span> de <span className="font-bold text-gray-800">{filteredVIP.length}</span> clientes
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -232,9 +232,9 @@ export default function AdminVIP({ vipMembers, onRefresh }: AdminVIPProps) {
                 </div>
                 
                 <div>
-                  <h4 className="text-sm font-black text-brand-navy">¿Remover Miembro VIP?</h4>
+                  <h4 className="text-sm font-black text-brand-navy">¿Eliminar Cliente?</h4>
                   <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-                    Esta acción revocará la membresía del cliente y lo eliminará de forma irreversible de la base de datos de Supabase.
+                    Esta acción eliminará de forma irreversible los datos de este cliente de la base de datos de Supabase.
                   </p>
                 </div>
 
@@ -242,14 +242,14 @@ export default function AdminVIP({ vipMembers, onRefresh }: AdminVIPProps) {
                   <button
                     onClick={() => setDeleteConfirmId(null)}
                     disabled={isDeleting}
-                    className="flex-1 rounded-xl bg-gray-100 hover:bg-gray-200 px-4 py-2.5 text-xs font-bold text-gray-600 transition"
+                    className="flex-1 rounded-xl bg-gray-100 hover:bg-gray-200 px-4 py-2.5 text-xs font-bold text-gray-600 transition cursor-pointer"
                   >
                     Mantener
                   </button>
                   <button
                     onClick={handleDeleteVIP}
                     disabled={isDeleting}
-                    className="flex-1 rounded-xl bg-rose-600 hover:bg-rose-700 text-white px-4 py-2.5 text-xs font-bold transition-all shadow-sm"
+                    className="flex-1 rounded-xl bg-rose-600 hover:bg-rose-700 text-white px-4 py-2.5 text-xs font-bold transition-all shadow-sm cursor-pointer"
                   >
                     {isDeleting ? 'Borrando...' : 'Sí, Eliminar'}
                   </button>

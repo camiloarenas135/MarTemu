@@ -7,11 +7,10 @@ import React from 'react';
 import { Instagram, Facebook } from 'lucide-react';
 
 interface FooterProps {
-  onOpenVIP: () => void;
   onNavigateShop: () => void;
 }
 
-export default function Footer({ onOpenVIP, onNavigateShop }: FooterProps) {
+export default function Footer({ onNavigateShop }: FooterProps) {
   return (
     <footer className="bg-brand-navy text-gray-300">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
@@ -30,14 +29,6 @@ export default function Footer({ onOpenVIP, onNavigateShop }: FooterProps) {
                   className="hover:text-white transition-colors duration-200"
                 >
                   Nuestra Tienda
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={onOpenVIP}
-                  className="hover:text-white transition-colors duration-200"
-                >
-                  Club VIP
                 </button>
               </li>
               <li>

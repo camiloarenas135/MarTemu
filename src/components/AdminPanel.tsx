@@ -10,7 +10,7 @@ import { Product, Order, VIPMember } from '../types';
 import AdminOrders from './AdminOrders';
 import AdminCatalog from './AdminCatalog';
 import AdminStats from './AdminStats';
-import AdminVIP from './AdminVIP';
+import AdminCustomers from './AdminCustomers';
 import AdminPromotions from './AdminPromotions';
 
 interface AdminPanelProps {
@@ -255,7 +255,7 @@ export default function AdminPanel({ products, onRefreshProducts }: AdminPanelPr
               }`}
             >
               <Users className="h-4 w-4" />
-              <span>Club VIP ({vipMembers.length})</span>
+              <span>Clientes ({vipMembers.length})</span>
             </button>
           </div>
 
@@ -320,7 +320,7 @@ export default function AdminPanel({ products, onRefreshProducts }: AdminPanelPr
           )}
 
           {!isDataLoading && activeSubTab === 'vip' && (
-            <AdminVIP vipMembers={vipMembers} onRefresh={fetchAdminData} />
+            <AdminCustomers vipMembers={vipMembers} onRefresh={fetchAdminData} />
           )}
         </div>
 

@@ -199,6 +199,24 @@ export default function Cart({
         throw new Error(error.message || 'Error guardando pedido en base de datos.');
       }
 
+      // Auto-register customer in vip_members table (repurposed as clients)
+      try {
+        const { data: existingClients } = await supabase
+          .from('vip_members')
+          .select('*')
+          .eq('whatsapp', sanitizedPhone);
+
+        if (!existingClients || existingClients.length === 0) {
+          await supabase.from('vip_members').insert({
+            name: sanitizedName,
+            whatsapp: sanitizedPhone
+          });
+        }
+      } catch (clientErr) {
+        console.error('Error auto-registering client:', clientErr);
+        // Do not fail checkout if client tracking fails
+      }
+
       // Record successful attempt to prevent abuse
       recordAttempt('checkout', 60 * 60 * 1000);
 
