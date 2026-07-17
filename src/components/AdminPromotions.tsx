@@ -280,18 +280,18 @@ export default function AdminPromotions({ products, onRefresh }: AdminPromotions
         </div>
 
         {/* Metric 2 */}
-        <div className="bg-linear-to-br from-brand-purple to-pink-600 rounded-2xl p-5 text-white shadow-xs relative overflow-hidden">
+        <div className="bg-linear-to-br from-brand-blue to-brand-purple rounded-2xl p-5 text-white shadow-xs relative overflow-hidden">
           <div className="absolute right-3 top-3 h-16 w-16 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-pink-200">Ofertas Activas</span>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-blue-200">Ofertas Activas</span>
           <div className="flex items-baseline gap-2 mt-2">
             <span className="text-3xl font-black">{totalPromotions}</span>
-            <span className="text-xs text-pink-200">({promoPercent}% del catálogo)</span>
+            <span className="text-xs text-blue-200">({promoPercent}% del catálogo)</span>
           </div>
-          <p className="text-[10px] text-pink-100 mt-2">Artículos actualmente con precio rebajado</p>
+          <p className="text-[10px] text-blue-100 mt-2">Artículos actualmente con precio rebajado</p>
         </div>
 
         {/* Metric 3 */}
-        <div className="bg-linear-to-br from-rose-500 to-amber-500 rounded-2xl p-5 text-white shadow-xs relative overflow-hidden">
+        <div className="bg-linear-to-br from-brand-purple to-rose-500 rounded-2xl p-5 text-white shadow-xs relative overflow-hidden">
           <div className="absolute right-3 top-3 h-16 w-16 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
           <span className="text-[10px] font-bold uppercase tracking-wider text-rose-100">Descuento Promedio</span>
           <div className="flex items-baseline gap-2 mt-2">

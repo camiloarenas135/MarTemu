@@ -11,6 +11,57 @@ import { sanitizeString, sanitizePhone, sanitizeTotalAmount } from '../utils/san
 import { checkRateLimit, recordAttempt } from '../utils/rateLimiter';
 import { supabase } from '../lib/supabase';
 
+// Custom Brand SVGs for Payment Methods
+const EfectivoLogo = () => (
+  <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2005/svg">
+    <rect width="24" height="24" rx="5" fill="#ffe600" />
+    <path d="M8 8l4 4-4 4m5-8l4 4-4 4" stroke="#0035a0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const NequiLogo = () => (
+  <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2005/svg">
+    <rect width="24" height="24" rx="5" fill="#1e102f" />
+    <path d="M6 7.5h2.5V11L6 10.5V7.5zm5 0h2.5v9H11v-9zm2.5 3.5l2.5 3V7.5H18.5v9H16v-3.5l-2.5-3v6.5H11v-9h2.5z" fill="#ffffff" />
+    <circle cx="18" cy="7.5" r="1" fill="#da1c5c" />
+  </svg>
+);
+
+const DaviplataLogo = () => (
+  <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2005/svg">
+    <rect width="24" height="24" rx="5" fill="#e30613" />
+    <path d="M12 6l-5 4v6.5h10V10l-5-4zm-1.5 8.5v-3h3v3h-3z" fill="#ffffff" />
+    <circle cx="12" cy="9" r="1" fill="#ffffff" />
+  </svg>
+);
+
+const BoldLogo = () => (
+  <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2005/svg">
+    <circle cx="12" cy="12" r="11" fill="#ff004f" />
+    <path d="M8.5 7h2v3.5c.4-.6.9-1 1.7-1 1.5 0 2.5 1 2.5 2.5s-1 2.5-2.5 2.5c-.7 0-1.3-.4-1.7-.9v2.4h-2V7zm2 5.5v1.5c.3.3.6.4 1 .4.7 0 1.1-.4 1.1-1.2s-.4-1.2-1.1-1.2c-.4 0-.7.1-1 .5z" fill="#ffffff" />
+  </svg>
+);
+
+const TarjetaLogo = () => (
+  <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2005/svg">
+    <rect width="24" height="16" y="4" rx="3" fill="#0b1e46" />
+    <rect width="24" height="3.5" y="7" fill="#000" />
+    <circle cx="6" cy="14" r="2" fill="#eb001b" />
+    <circle cx="9" cy="14" r="2" fill="#f79e1b" opacity="0.85" />
+  </svg>
+);
+
+const TransferenciaLogo = () => (
+  <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2005/svg">
+    <rect width="24" height="24" rx="5" fill="#f4f6f9" />
+    <path d="M5.5 10c0-2 1.5-3.5 3.5-3.5h6c2 0 3.5 1.5 3.5 3.5v4c0 2-1.5 3.5-3.5 3.5h-6c-2 0-3.5-1.5-3.5-3.5v-4z" fill="#0c2340" />
+    <path d="M7.5 9h2.5v1.2H7.5V9zm0 3.2H12v1.2H7.5v-1.2z" fill="#ffffff" />
+    <circle cx="15" cy="8.5" r="1.2" fill="#fcd116" />
+    <circle cx="15" cy="11" r="1.2" fill="#003893" />
+    <circle cx="15" cy="13.5" r="1.2" fill="#ce1126" />
+  </svg>
+);
+
 interface CartProps {
   isOpen: boolean;
   onClose: () => void;
@@ -54,12 +105,12 @@ export default function Cart({
   }, [isOpen, onClose]);
 
   const PAYMENT_METHODS = [
-    { id: 'efectivo', label: 'Efectivo', icon: Banknote, color: 'emerald' },
-    { id: 'nequi', label: 'Nequi', icon: Smartphone, color: 'purple' },
-    { id: 'daviplata', label: 'Daviplata', icon: Wallet, color: 'rose' },
-    { id: 'bold', label: 'Bold', icon: CreditCard, color: 'blue' },
-    { id: 'tarjeta', label: 'Tarjeta', icon: CreditCard, color: 'amber' },
-    { id: 'transferencia', label: 'Transferencia', icon: Wallet, color: 'cyan' },
+    { id: 'efectivo', label: 'Efectivo', logo: EfectivoLogo, color: 'emerald' },
+    { id: 'nequi', label: 'Nequi', logo: NequiLogo, color: 'purple' },
+    { id: 'daviplata', label: 'Daviplata', logo: DaviplataLogo, color: 'rose' },
+    { id: 'bold', label: 'Bold', logo: BoldLogo, color: 'blue' },
+    { id: 'tarjeta', label: 'Tarjeta', logo: TarjetaLogo, color: 'amber' },
+    { id: 'transferencia', label: 'Transferencia', logo: TransferenciaLogo, color: 'cyan' },
   ];
 
   // Calculate order total
@@ -426,15 +477,15 @@ export default function Cart({
                           </label>
                           <div className="grid grid-cols-3 gap-2">
                             {PAYMENT_METHODS.map((method) => {
-                              const Icon = method.icon;
+                              const LogoComponent = method.logo;
                               const isSelected = paymentMethod === method.id;
                               const colorMap: Record<string, { bg: string; border: string; text: string; iconColor: string }> = {
-                                emerald: { bg: 'bg-emerald-50', border: 'border-emerald-400', text: 'text-emerald-700', iconColor: 'text-emerald-500' },
-                                purple: { bg: 'bg-purple-50', border: 'border-purple-400', text: 'text-purple-700', iconColor: 'text-purple-500' },
-                                rose: { bg: 'bg-rose-50', border: 'border-rose-400', text: 'text-rose-700', iconColor: 'text-rose-500' },
-                                blue: { bg: 'bg-blue-50', border: 'border-blue-400', text: 'text-blue-700', iconColor: 'text-blue-500' },
-                                amber: { bg: 'bg-amber-50', border: 'border-amber-400', text: 'text-amber-700', iconColor: 'text-amber-500' },
-                                cyan: { bg: 'bg-cyan-50', border: 'border-cyan-400', text: 'text-cyan-700', iconColor: 'text-cyan-500' },
+                                emerald: { bg: 'bg-emerald-50/50', border: 'border-emerald-400', text: 'text-emerald-700', iconColor: 'text-emerald-500' },
+                                purple: { bg: 'bg-purple-50/50', border: 'border-purple-400', text: 'text-purple-700', iconColor: 'text-purple-500' },
+                                rose: { bg: 'bg-rose-50/50', border: 'border-rose-400', text: 'text-rose-700', iconColor: 'text-rose-500' },
+                                blue: { bg: 'bg-blue-50/50', border: 'border-blue-400', text: 'text-blue-700', iconColor: 'text-blue-500' },
+                                amber: { bg: 'bg-amber-50/50', border: 'border-amber-400', text: 'text-amber-700', iconColor: 'text-amber-500' },
+                                cyan: { bg: 'bg-cyan-50/50', border: 'border-cyan-400', text: 'text-cyan-700', iconColor: 'text-cyan-500' },
                               };
                               const colors = colorMap[method.color] || colorMap.blue;
 
@@ -443,18 +494,27 @@ export default function Cart({
                                   key={method.id}
                                   type="button"
                                   onClick={() => setPaymentMethod(method.id)}
-                                  className={`flex flex-col items-center gap-1 rounded-xl border-2 px-2 py-2.5 text-[10px] font-bold transition-all cursor-pointer ${
+                                  className={`flex flex-col items-center gap-1.5 rounded-xl border-2 px-2 py-2.5 text-[10px] font-bold transition-all cursor-pointer ${
                                     isSelected
                                       ? `${colors.bg} ${colors.border} ${colors.text} shadow-sm scale-[1.02]`
                                       : 'border-gray-150 bg-white text-gray-500 hover:border-gray-300 hover:bg-gray-50'
                                   }`}
                                 >
-                                  <Icon className={`h-4 w-4 ${isSelected ? colors.iconColor : 'text-gray-400'}`} />
+                                  <LogoComponent />
                                   <span>{method.label}</span>
                                 </button>
                               );
                             })}
                           </div>
+                          {paymentMethod === 'bold' && (
+                            <motion.p
+                              initial={{ opacity: 0, y: -5 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="text-[10px] font-bold text-brand-purple bg-purple-50/60 border border-purple-100 rounded-lg p-2.5 mt-2 leading-relaxed text-center"
+                            >
+                              💳 Aceptamos cualquier tipo de tarjeta de crédito o débito (Visa, Mastercard, American Express, Codensa, Diners, etc.) de forma segura a través de Bold.
+                            </motion.p>
+                          )}
                         </div>
 
                         <button
