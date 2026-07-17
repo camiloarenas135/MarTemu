@@ -463,7 +463,7 @@ export default function AdminPromotions({ products, onRefresh }: AdminPromotions
                   <option value="Todos">Todos los Productos</option>
                   <option value="Tecnología">Tecnología</option>
                   <option value="Hogar y Cocina">Hogar y Cocina</option>
-                  <option value="Moda">Moda</option>
+                  <option value="Ropa">Ropa</option>
                   <option value="Belleza">Belleza</option>
                   <option value="Novedades">Novedades</option>
                 </select>

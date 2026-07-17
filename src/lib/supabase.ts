@@ -70,7 +70,7 @@ const DEFAULT_PRODUCTS: Product[] = [
     id: 'prod-3',
     name: 'Chaqueta Impermeable Urbana',
     price: '$159.900',
-    category: 'Moda',
+    category: 'Ropa',
     stock: 15,
     description: 'Chaqueta de corte aerodinámico, impermeable y cortavientos con costuras termoselladas. Diseñada para protegerte de climas lluviosos sin perder la transpirabilidad ni el estilo urbano característico.',
     images: [

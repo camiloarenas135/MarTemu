@@ -23,7 +23,7 @@ const parsePrice = (priceStr: string): number => {
   return isNaN(numeric) ? 0 : numeric;
 };
 
-const CATEGORIES = ['Todos', 'Tecnología', 'Hogar y Cocina', 'Moda', 'Belleza', 'Novedades'];
+const CATEGORIES = ['Todos', 'Tecnología', 'Hogar y Cocina', 'Ropa', 'Belleza', 'Novedades'];
 
 export default function Catalog({
   products,

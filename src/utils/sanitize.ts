@@ -101,7 +101,7 @@ function deepSanitize(val: any): any {
 export const DEFAULT_DESCRIPTIONS: Record<string, string> = {
   'Tecnología': 'Experimenta la mejor tecnología con este producto diseñado para ofrecerte un alto rendimiento, durabilidad excepcional y la última innovación en su categoría. Ideal para uso diario o profesional.',
   'Hogar y Cocina': 'El complemento perfecto para tu hogar. Combina funcionalidad, diseño moderno y materiales de alta calidad para facilitar tus tareas diarias y darle un toque especial a tus espacios.',
-  'Moda': 'Prenda o accesorio de diseño exclusivo y actual. Fabricado con materiales cómodos y duraderos, ideales para complementar tu estilo en cualquier ocasión con total comodidad.',
+  'Ropa': 'Prenda o accesorio de diseño exclusivo y actual. Fabricado con materiales cómodos y duraderos, ideales para complementar tu estilo en cualquier ocasión con total comodidad.',
   'Belleza': 'Fórmula premium e ingredientes seleccionados especialmente para el cuidado personal. Diseñado para realzar tu belleza natural y ofrecerte una experiencia de cuidado única y saludable.',
   'Novedades': 'Descubre el artículo más innovador y sorprendente del momento. Un producto único y práctico que no encontrarás en ningún otro lugar, perfecto para regalar o consentirte.'
 };
