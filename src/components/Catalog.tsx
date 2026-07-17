@@ -8,6 +8,7 @@ import { Search, ChevronRight, ChevronLeft, ShoppingCart, SlidersHorizontal, Ale
 import { motion, AnimatePresence } from 'motion/react';
 import { Product, ProductVariant } from '../types';
 import { sanitizeString, DEFAULT_DESCRIPTIONS } from '../utils/sanitize';
+import { parseCOP, calculateDiscountPercent, getVariantPromoPrice } from '../utils/promoHelpers';
 
 interface CatalogProps {
   products: Product[];
@@ -18,7 +19,7 @@ interface CatalogProps {
 }
 
 const parsePrice = (priceStr: string): number => {
-  const numeric = parseFloat(priceStr.replace(/[^0-9.]/g, ''));
+  const numeric = parseInt(priceStr.replace(/[^\d]/g, ''), 10);
   return isNaN(numeric) ? 0 : numeric;
 };
 
@@ -130,7 +131,8 @@ export default function Catalog({
                             p.description.toLowerCase().includes(searchQuery.toLowerCase());
       
       // Price filters
-      const priceVal = parsePrice(p.price);
+      const activePriceStr = p.promo_price ? p.promo_price : p.price;
+      const priceVal = parsePrice(activePriceStr);
       const matchesMinPrice = minPrice === '' || priceVal >= parseFloat(minPrice);
       const matchesMaxPrice = maxPrice === '' || priceVal <= parseFloat(maxPrice);
       
@@ -446,9 +448,23 @@ export default function Catalog({
                     <div className="pt-2 flex items-center justify-between border-t border-gray-50/50 mt-1">
                       <div className="flex flex-col">
                         <span className="text-[9px] sm:text-xs font-semibold text-gray-450">Precio</span>
-                        <span className="text-sm sm:text-base font-black text-brand-navy">
-                          {product.price}
-                        </span>
+                        {product.promo_price ? (
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-sm sm:text-base font-black text-rose-600">
+                              {product.promo_price}
+                            </span>
+                            <span className="text-[10px] sm:text-xs text-gray-400 line-through">
+                              {product.price}
+                            </span>
+                            <span className="inline-flex items-center rounded-sm bg-rose-50 px-1 py-0.5 text-[9px] font-bold text-rose-700 border border-rose-100 animate-pulse">
+                              {calculateDiscountPercent(product.price, product.promo_price)}% OFF
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-sm sm:text-base font-black text-brand-navy">
+                            {product.price}
+                          </span>
+                        )}
                       </div>
 
                       <button
@@ -607,9 +623,25 @@ export default function Catalog({
                   </h2>
 
                   {/* Pricing and dynamics */}
-                  <div className="text-2xl font-black text-brand-purple">
-                    {selectedVariant ? selectedVariant.price : selectedProduct.price}
-                  </div>
+                  {selectedProduct.promo_price ? (
+                    <div className="flex items-baseline gap-2.5 flex-wrap">
+                      <span className="text-2xl font-black text-rose-600">
+                        {selectedVariant 
+                          ? getVariantPromoPrice(selectedProduct.price, selectedProduct.promo_price, selectedVariant.price)
+                          : selectedProduct.promo_price}
+                      </span>
+                      <span className="text-sm text-gray-400 line-through">
+                        {selectedVariant ? selectedVariant.price : selectedProduct.price}
+                      </span>
+                      <span className="inline-flex items-center rounded-md bg-rose-50 px-2 py-1 text-[11px] font-bold text-rose-700 border border-rose-100 animate-pulse">
+                        {calculateDiscountPercent(selectedProduct.price, selectedProduct.promo_price)}% OFF
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="text-2xl font-black text-brand-purple">
+                      {selectedVariant ? selectedVariant.price : selectedProduct.price}
+                    </div>
+                  )}
 
                   {/* Sanitized description container */}
                   <div className="text-xs text-gray-500 leading-relaxed border-t border-gray-100 pt-4">

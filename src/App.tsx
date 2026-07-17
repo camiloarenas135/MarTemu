@@ -13,6 +13,7 @@ import Cart from './components/Cart';
 import VIPClubForm from './components/VIPClubForm';
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 import { supabase } from './lib/supabase';
+import { getVariantPromoPrice } from './utils/promoHelpers';
 import { Product, OrderCartItem, ProductVariant } from './types';
 import { writeSafeLocalStorage, readSafeLocalStorage } from './utils/sanitize';
 
@@ -130,13 +131,26 @@ export default function App() {
       copy[existingIndex].quantity += 1;
       updateCartState(copy);
     } else {
+      const basePrice = product.promo_price ? product.promo_price : product.price;
+      
+      let finalVariant: ProductVariant | undefined = undefined;
+      if (variant) {
+        finalVariant = {
+          name: variant.name,
+          price: product.promo_price 
+            ? getVariantPromoPrice(product.price, product.promo_price, variant.price)
+            : variant.price,
+          image: variant.image
+        };
+      }
+
       const newItem: OrderCartItem = {
         id: product.id,
         name: product.name,
-        price: product.price,
+        price: basePrice,
         quantity: 1,
         image: (variant && variant.image) ? variant.image : product.images[0],
-        selectedVariant: variant ? { name: variant.name, price: variant.price, image: variant.image } : undefined
+        selectedVariant: finalVariant
       };
       updateCartState([...cartItems, newItem]);
     }

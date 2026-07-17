@@ -4,13 +4,14 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Shield, LayoutDashboard, ClipboardList, Package, LogOut, RefreshCw, Users } from 'lucide-react';
+import { Shield, LayoutDashboard, ClipboardList, Package, LogOut, RefreshCw, Users, Percent } from 'lucide-react';
 import { supabase, isRealSupabaseConfigured } from '../lib/supabase';
 import { Product, Order, VIPMember } from '../types';
 import AdminOrders from './AdminOrders';
 import AdminCatalog from './AdminCatalog';
 import AdminStats from './AdminStats';
 import AdminVIP from './AdminVIP';
+import AdminPromotions from './AdminPromotions';
 
 interface AdminPanelProps {
   products: Product[];
@@ -23,7 +24,7 @@ export default function AdminPanel({ products, onRefreshProducts }: AdminPanelPr
   const [errorMsg, setErrorMsg] = useState('');
   
   // Tab Management
-  const [activeSubTab, setActiveSubTab] = useState<'stats' | 'orders' | 'catalog' | 'vip'>(() => {
+  const [activeSubTab, setActiveSubTab] = useState<'stats' | 'orders' | 'catalog' | 'vip' | 'promotions'>(() => {
     const saved = sessionStorage.getItem('admin_active_subtab');
     return (saved as any) || 'stats';
   });
@@ -226,11 +227,23 @@ export default function AdminPanel({ products, onRefreshProducts }: AdminPanelPr
               className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition ${
                 activeSubTab === 'catalog'
                   ? 'bg-brand-navy text-white shadow-xs'
-                  : 'text-gray-500 hover:text-gray-900 hover:bg-slate-50'
+                  : 'text-gray-550 hover:text-gray-900 hover:bg-slate-50'
               }`}
             >
               <Package className="h-4 w-4" />
               <span>Catálogo ({products.length})</span>
+            </button>
+
+            <button
+              onClick={() => setActiveSubTab('promotions')}
+              className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition ${
+                activeSubTab === 'promotions'
+                  ? 'bg-brand-navy text-white shadow-xs'
+                  : 'text-gray-555 hover:text-gray-900 hover:bg-slate-50'
+              }`}
+            >
+              <Percent className="h-4 w-4" />
+              <span>Promociones ({products.filter(p => p.promo_price).length})</span>
             </button>
 
             <button
@@ -296,6 +309,13 @@ export default function AdminPanel({ products, onRefreshProducts }: AdminPanelPr
               onRefresh={fetchAdminData} 
               forceEditProduct={forceEditProduct}
               onClearForceEdit={() => setForceEditProduct(null)}
+            />
+          )}
+
+          {!isDataLoading && activeSubTab === 'promotions' && (
+            <AdminPromotions 
+              products={products} 
+              onRefresh={fetchAdminData} 
             />
           )}
 

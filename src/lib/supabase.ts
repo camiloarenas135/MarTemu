@@ -47,7 +47,8 @@ const DEFAULT_PRODUCTS: Product[] = [
     variants: [
       { name: 'Negro Estelar', price: '$189.900' },
       { name: 'Plata Glaciar', price: '$199.900' }
-    ]
+    ],
+    promo_price: '$149.900'
   },
   {
     id: 'prod-2',
@@ -93,7 +94,8 @@ const DEFAULT_PRODUCTS: Product[] = [
     ],
     variants: [
       { name: 'Frasco 30ml', price: '$79.900' }
-    ]
+    ],
+    promo_price: '$59.900'
   },
   {
     id: 'prod-5',

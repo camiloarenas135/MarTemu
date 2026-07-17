@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Product, ProductVariant } from '../types';
 import { supabase } from '../lib/supabase';
 import { sanitizeString, DEFAULT_DESCRIPTIONS } from '../utils/sanitize';
+import { parseCOP, formatCOP, calculateDiscountPercent } from '../utils/promoHelpers';
 
 interface AdminCatalogProps {
   products: Product[];
@@ -31,6 +32,7 @@ export default function AdminCatalog({
   // Form values
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
+  const [promoPrice, setPromoPrice] = useState('');
   const [category, setCategory] = useState('Tecnología');
   const [stock, setStock] = useState(0);
   const [description, setDescription] = useState('');
@@ -154,6 +156,7 @@ export default function AdminCatalog({
     setEditingProduct({});
     setName('');
     setPrice('');
+    setPromoPrice('');
     setCategory('Tecnología');
     setStock(10);
     setDescription(DEFAULT_DESCRIPTIONS['Tecnología'] || '');
@@ -168,6 +171,7 @@ export default function AdminCatalog({
     setEditingProduct(prod);
     setName(capitalizeTitle(prod.name));
     setPrice(prod.price);
+    setPromoPrice(prod.promo_price || '');
     setCategory(prod.category);
     setStock(prod.stock);
     setDescription(prod.description || DEFAULT_DESCRIPTIONS[prod.category] || '');
@@ -449,24 +453,34 @@ export default function AdminCatalog({
       return;
     }
 
+    if (promoPrice) {
+      const origVal = parseCOP(price);
+      const promoVal = parseCOP(promoPrice);
+      if (promoVal >= origVal) {
+        setUploadError('El precio promocional debe ser menor que el precio base.');
+        return;
+      }
+    }
+
     const sanitizedName = sanitizeString(capitalizeTitle(name), 100);
     const sanitizedDescription = sanitizeString(description, 1000);
     
     // Clean and sanitize variants including their associated images
     const sanitizedVariants = variants.map(v => ({
       name: sanitizeString(v.name, 100),
-      price: sanitizeString(v.price, 30),
+      price: formatCOP(parseCOP(v.price)),
       image: v.image ? sanitizeString(v.image, 1000) : undefined
     })).filter(v => v.name.length > 0);
 
     const productPayload: Omit<Product, 'id' | 'created_at'> = {
       name: sanitizedName,
-      price: sanitizeString(price, 30),
+      price: formatCOP(parseCOP(price)),
       category,
       stock: Math.max(0, stock),
       description: sanitizedDescription,
       images,
-      variants: sanitizedVariants
+      variants: sanitizedVariants,
+      promo_price: promoPrice ? formatCOP(parseCOP(promoPrice)) : undefined
     };
 
     try {
@@ -601,6 +615,20 @@ export default function AdminCatalog({
                   </div>
 
                   <div className="space-y-1">
+                    <label htmlFor="prod-promo-price" className="text-[10px] font-bold text-gray-500 uppercase">Precio Promocional (Opcional)</label>
+                    <input
+                      id="prod-promo-price"
+                      type="text"
+                      placeholder="Ej. $12.000"
+                      value={promoPrice}
+                      onChange={(e) => setPromoPrice(e.target.value)}
+                      className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs text-gray-800 focus:border-brand-purple focus:outline-hidden"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
                     <label htmlFor="prod-category" className="text-[10px] font-bold text-gray-500 uppercase">Categoría</label>
                     <select
                       id="prod-category"
@@ -619,9 +647,7 @@ export default function AdminCatalog({
                       ))}
                     </select>
                   </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label htmlFor="prod-stock" className="text-[10px] font-bold text-gray-500 uppercase">Existencias Iniciales (Stock)</label>
                     <input
@@ -909,7 +935,17 @@ export default function AdminCatalog({
 
                   {/* Price Column */}
                   <td className="px-6 py-4">
-                    <span className="font-extrabold text-gray-800">{prod.price}</span>
+                    {prod.promo_price ? (
+                      <div className="flex flex-col text-left">
+                        <span className="font-extrabold text-rose-600">{prod.promo_price}</span>
+                        <span className="text-[10px] text-gray-400 line-through">{prod.price}</span>
+                        <span className="text-[9px] text-rose-700 font-bold bg-rose-50 border border-rose-100 rounded-sm px-1 py-0.2 mt-0.5 max-w-fit block">
+                          {calculateDiscountPercent(prod.price, prod.promo_price)}% OFF
+                        </span>
+                      </div>
+                    ) : (
+                      <span className="font-extrabold text-gray-800">{prod.price}</span>
+                    )}
                   </td>
 
                   {/* Stock Column */}

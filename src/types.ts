@@ -19,6 +19,7 @@ export interface Product {
   images: string[]; // JSONB array of strings/URLs
   variants: ProductVariant[]; // JSONB array of variant objects
   created_at?: string;
+  promo_price?: string;
 }
 
 export interface VIPMember {
