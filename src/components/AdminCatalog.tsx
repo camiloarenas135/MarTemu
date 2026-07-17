@@ -279,16 +279,16 @@ export default function AdminCatalog({
   const processAndUploadFiles = async (files: FileList) => {
     const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
     const currentCount = images.length;
-    const remainingSlots = 10 - currentCount;
+    const remainingSlots = 20 - currentCount;
     const filesArray = Array.from(files);
 
     if (filesArray.length === 0) return;
 
     if (filesArray.length > remainingSlots) {
       if (remainingSlots === 0) {
-        setUploadError('Límite de imágenes alcanzado. El máximo permitido es 10 imágenes.');
+        setUploadError('Límite de imágenes alcanzado. El máximo permitido es 20 imágenes.');
       } else {
-        setUploadError(`Límite superado. Solo puedes agregar ${remainingSlots} imagen(es) más (límite de 10).`);
+        setUploadError(`Límite superado. Solo puedes agregar ${remainingSlots} imagen(es) más (límite de 20).`);
       }
       return;
     }
@@ -718,7 +718,7 @@ export default function AdminCatalog({
                       <>
                         <Upload className="h-6 w-6 text-gray-400 mb-2" />
                         <span className="text-xs text-gray-600 font-bold block">Arrastra o haz clic para subir imágenes</span>
-                        <span className="text-[10px] text-gray-400 mt-1">Sube hasta 10 imágenes a la vez. Compresión automática WebP.</span>
+                        <span className="text-[10px] text-gray-400 mt-1">Sube hasta 20 imágenes a la vez. Compresión automática WebP.</span>
                       </>
                     )}
                   </div>
