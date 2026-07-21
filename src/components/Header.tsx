@@ -4,9 +4,8 @@
  */
 
 import React, { useState } from 'react';
-import { ShoppingBag, Shield, Search, X, Users } from 'lucide-react';
+import { ShoppingBag, Shield, Search, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { isRealSupabaseConfigured } from '../lib/supabase';
 
 interface HeaderProps {
   cartCount: number;

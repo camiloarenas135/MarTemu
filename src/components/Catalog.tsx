@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useTransition, useCallback } from 'react';
+import React, { useState, useEffect, useTransition } from 'react';
 import { Search, ChevronRight, ChevronLeft, ShoppingCart, SlidersHorizontal, AlertTriangle, Image as ImageIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Product, ProductVariant } from '../types';
@@ -17,11 +17,6 @@ interface CatalogProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
 }
-
-const parsePrice = (priceStr: string): number => {
-  const numeric = parseInt(priceStr.replace(/[^\d]/g, ''), 10);
-  return isNaN(numeric) ? 0 : numeric;
-};
 
 const CATEGORIES = ['Todos', 'Tecnología', 'Hogar y Cocina', 'Ropa', 'Belleza', 'Peluches', 'Novedades'];
 
@@ -149,7 +144,7 @@ export default function Catalog({
       
       // Price filters
       const activePriceStr = p.promo_price ? p.promo_price : p.price;
-      const priceVal = parsePrice(activePriceStr);
+      const priceVal = parseCOP(activePriceStr);
       const matchesMinPrice = minPrice === '' || priceVal >= parseFloat(minPrice);
       const matchesMaxPrice = maxPrice === '' || priceVal <= parseFloat(maxPrice);
       
@@ -160,10 +155,10 @@ export default function Catalog({
     })
     .sort((a, b) => {
       if (sortBy === 'priceAsc') {
-        return parsePrice(a.price) - parsePrice(b.price);
+        return parseCOP(a.price) - parseCOP(b.price);
       }
       if (sortBy === 'priceDesc') {
-        return parsePrice(b.price) - parsePrice(a.price);
+        return parseCOP(b.price) - parseCOP(a.price);
       }
       if (sortBy === 'nameAsc') {
         return a.name.localeCompare(b.name);
@@ -183,7 +178,7 @@ export default function Catalog({
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-16 relative">
+    <div className="bg-slate-50 min-h-screen pb-20 relative">
       {/* Soft background ambient glows */}
       <div className="absolute top-0 inset-x-0 h-125 bg-linear-to-b from-brand-blue/5 to-transparent pointer-events-none" />
       <div className="absolute right-0 top-1/3 h-96 w-96 rounded-full bg-brand-purple/5 blur-3xl pointer-events-none" />
@@ -371,7 +366,7 @@ export default function Catalog({
               const isPriority = index < 4;
               
               // Data-driven promo badges based on product properties
-              const isFreeShipping = parsePrice(product.price) >= 150000;
+              const isFreeShipping = parseCOP(product.price) >= 150000;
               const isBestSeller = product.stock >= 10;
               
               return (

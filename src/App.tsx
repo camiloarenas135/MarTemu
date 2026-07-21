@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { Home, Search, ShoppingBag, User } from 'lucide-react';
+import { Home, Search, ShoppingBag } from 'lucide-react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { motion } from 'motion/react';

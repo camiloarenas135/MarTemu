@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { ShoppingBag, X, Trash2, Plus, Minus, Send, CheckCircle, Smartphone, MapPin, CreditCard, Banknote, Wallet } from 'lucide-react';
+import { ShoppingBag, X, Trash2, Plus, Minus, Send, CheckCircle, Smartphone, MapPin, CreditCard } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { OrderCartItem, ProductVariant } from '../types';
 import { sanitizeString, sanitizePhone, sanitizeTotalAmount } from '../utils/sanitize';
@@ -175,7 +175,6 @@ export default function Cart({
 
     try {
       // 2. Prepare order payload for Supabase database
-      const sanitizedAddress = sanitizeString(deliveryAddress, 300);
       const orderPayload = {
         customer_name: sanitizedName,
         customer_phone: sanitizedPhone,

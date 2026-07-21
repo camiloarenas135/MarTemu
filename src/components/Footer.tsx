@@ -12,7 +12,7 @@ interface FooterProps {
 
 export default function Footer({ onNavigateShop }: FooterProps) {
   return (
-    <footer className="bg-brand-navy text-gray-300">
+    <footer className="bg-brand-navy text-gray-300 pb-16 md:pb-0">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
